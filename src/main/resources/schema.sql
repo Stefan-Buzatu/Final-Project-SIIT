@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS reward
 (
     reward_id uuid NOT NULL,
     reward character varying(50) NOT NULL,
+    no_entries integer,
     CONSTRAINT reward_pkey PRIMARY KEY (reward_id)
     );
 

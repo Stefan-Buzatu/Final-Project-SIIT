@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('resources/back.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.container {
+    width: 900px;
+    margin-left: 300px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+}
+
+td {
+
+    text-align: center;
+    padding: 0;
+    width: 250px;
+    height: 200px;
+}
+
+button {
+    width: 100%;
+    height: 100%;
+    border: none; /* Remove the button border if desired */
+    font-size: 16px; /* Adjust the font size if needed */
+    font-weight: bold; /* Add font weight if desired */
+    cursor: pointer;
+    border-radius: 10px;
+
+}
+
+.btn-add-client {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+
+.btn-view-clients {
+    background-color: #2ecc71;
+    color: #ffffff;
+}
+
+
+.btn-search-client {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+
+.btn-add-entry {
+    background-color: #A0A1A0;
+    color: #ffffff;
+}
+
+
+.btn-view-no-entries {
+    background-color: #111307;
+    color: #ffffff;
+}
+
+
+.btn-view-rewards {
+    background-color: #46585a;
+    color: #ffffff;
+}
+button:hover {
+    opacity: 0.85;
+}
