@@ -35,7 +35,7 @@ public class CoffeeShopServlet extends HttpServlet {
         switch (action){
             case ADD_CLIENT:
                 req.setAttribute("action", Action.ADD_CLIENT);
-                addClientForm(req,resp);
+                addEditForm(req,resp);
                 break;
             case SEARCH_CLIENT:
                 req.setAttribute("action",Action.SEARCH_CLIENT);
@@ -57,6 +57,18 @@ public class CoffeeShopServlet extends HttpServlet {
                 req.setAttribute("action",Action.VIEW_REWARDS);
                 viewRewards(req,resp);
                 break;
+            case HOME:
+                home(req, resp);
+                break;
+            case EDIT_CLIENT:
+                loadClient(req, resp);
+                req.setAttribute("action",Action.EDIT_CLIENT);
+                addEditForm(req, resp);
+                break;
+            case DELETE_CLIENT:
+                deleteClient(req, resp);
+                listClients(req, resp);
+                break;
             default:
                 home(req,resp);
                 break;
@@ -72,7 +84,11 @@ public class CoffeeShopServlet extends HttpServlet {
             case ADD_CLIENT:
                 addClient(req,resp);
                 break;
+            case EDIT_CLIENT:
+                editClient(req,resp);
+                break;
             case SEARCH_CLIENT:
+                searchClient(req,resp);
                 break;
             case ADD_ENTRY:
                 break;
@@ -90,12 +106,14 @@ public class CoffeeShopServlet extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("phone"));
         try {
+            if(client.getClientEmail().isEmpty() || client.getClientFirstName().isEmpty() || client.getClientLastName().isEmpty() || client.getClientPhoneNumber().isEmpty())
+            throw new SQLException();
             coffeeShop.addClient(client);
             listClients(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", e.getMessage());
-            addClientForm(req, resp);
+            addEditForm(req, resp);
         }
     }
 
@@ -104,8 +122,11 @@ public class CoffeeShopServlet extends HttpServlet {
             List<Client> clients = coffeeShop.getClients();
 
             req.setAttribute("clientsList", clients);
+            req.setAttribute("coffeeShop",coffeeShop);
+            req.setAttribute("action_delete_client",Action.DELETE_CLIENT);
+            req.setAttribute("action_edit_client",Action.EDIT_CLIENT);
 
-            req.getRequestDispatcher("/jsps/clients_list.jsp").forward(req, resp);
+            req.getRequestDispatcher("/jsps/ClientsList.jsp").forward(req, resp);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,23 +134,21 @@ public class CoffeeShopServlet extends HttpServlet {
     }
 
 
-    private void addClientForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/addClientForm.jsp").forward(req, resp);
+    private void addEditForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/jsps/Add-EditForm.jsp").forward(req, resp);
     }
     private void searchClientForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/searchClientForm.jsp").forward(req, resp);
+        req.getRequestDispatcher("/jsps/SearchClientForm.jsp").forward(req, resp);
     }
-    private void clientsList (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/clients_list.jsp").forward(req, resp);
-    }
+
     private void addEntryForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/addEntryForm.jsp").forward(req, resp);
+        req.getRequestDispatcher("/jsps/AddEntryForm.jsp").forward(req, resp);
     }
     private void viewNumbersOfEntriesForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/jsps/viewNumbersOfEntriesForm.jsp").forward(req, resp);
     }
     private void viewRewards (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/viewRewards.jsp").forward(req, resp);
+        req.getRequestDispatcher("/jsps/ViewRewards.jsp").forward(req, resp);
     }
 
 
@@ -143,10 +162,15 @@ public class CoffeeShopServlet extends HttpServlet {
     req.setAttribute("action_add_entry",Action.ADD_ENTRY);
     req.setAttribute("action_view_clients",Action.VIEW_CLIENTS);
 
-    req.getRequestDispatcher("/jsps/home.jsp").forward(req, resp);
+    req.getRequestDispatcher("/jsps/Home.jsp").forward(req, resp);
     }catch (Exception e){
     e.printStackTrace();
     }
+
+    }
+
+    private void searchClient (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 
     }
 
@@ -166,6 +190,58 @@ public class CoffeeShopServlet extends HttpServlet {
 
         return action;
     }
+
+
+    private void deleteClient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String clientId = req.getParameter("clientId");
+            UUID clientID = UUID.fromString(clientId);
+            coffeeShop.deleteClient(clientID);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("error", e.getMessage());
+        }
+    }
+
+    private void loadClient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String clientId = req.getParameter("clientId");
+            UUID clientID = UUID.fromString(clientId);
+            Client client = coffeeShop.findClientByID(clientID);
+            req.setAttribute("client", client);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("error", e.getMessage());
+        }
+    }
+
+    private void editClient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        UUID clientID  =UUID.fromString(req.getParameter("clientId"));
+        Client client = new Client(UUID.fromString(req.getParameter("clientId")),
+                req.getParameter("first_name"),
+                req.getParameter("last_name"),
+                req.getParameter("email"),
+                req.getParameter("phone"));
+        try {
+            if(client.getClientEmail().isEmpty() || client.getClientFirstName().isEmpty() || client.getClientLastName().isEmpty() || client.getClientPhoneNumber().isEmpty())
+                throw new SQLException();
+            coffeeShop.updateClient(clientID, client);
+            listClients(req, resp);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            loadClient(req, resp);
+            req.setAttribute("action", Action.EDIT_CLIENT);
+            req.setAttribute("error", e.getMessage());
+            addEditForm(req, resp);
+        }
+    }
+
+
+
+
+
 
     @Override
     public void destroy() {
