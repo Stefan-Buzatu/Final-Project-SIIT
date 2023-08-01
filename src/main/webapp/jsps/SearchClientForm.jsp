@@ -66,30 +66,30 @@
                 <td><c:out value="${requestScope.client.clientLastName}"/></td>
                 <td><c:out value="${requestScope.client.clientEmail}"/></td>
                 <td><c:out value="${requestScope.client.clientPhoneNumber}"/></td>
-                <td><c:out value="${requestScope.coffeeShop.numberOfEntries(client.clientID)}"/> </td>
+                <td><c:out value="${requestScope.coffeeShop.numberOfEntries(requestScope.client.clientID)}"/> </td>
                 <td>
-                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_edit_client}"/>&clientId=<c:out value="${client.clientID}"/>">
+                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_edit_client}"/>&clientId=<c:out value="${requestScope.client.clientID}"/>">
                         <button type="button" class="btn btn-success">EDIT</button></a>
 
                     <!-- Button trigger modal -->
-                    <button type="button" id="triggerDelete<c:out value="${client.clientID}"/>" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<c:out value="${client.clientID}"/>">DELETE</button></a>
+                    <button type="button" id="triggerDelete<c:out value="${requestScope.client.clientID}"/>" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<c:out value="${requestScope.client.clientID}"/>">DELETE</button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="deleteModal<c:out value="${client.clientID}"/>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<c:out value="${client.clientID}"/>" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal<c:out value="${requestScope.client.clientID}"/>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<c:out value="${requestScope.client.clientID}"/>" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel<c:out value="${client.clientID}"/>">Confirm deletion</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel<c:out value="${requestScope.client.clientID}"/>">Confirm deletion</h5>
                                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p> Are you sure you want to delete <c:out value="${client.clientFirstName}"/> <c:out value="${client.clientLastName}"/>?</p>
+                                    <p> Are you sure you want to delete <c:out value="${requestScope.client.clientFirstName}"/> <c:out value="${requestScope.client.clientLastName}"/>?</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_delete_client}"/>&clientId=<c:out value="${client.clientID}"/>">
+                                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_delete_client}"/>&clientId=<c:out value="${requestScope.client.clientID}"/>">
                                         <button type="button" class="btn btn-primary">Yes</button>
                                     </a>
                                 </div>
