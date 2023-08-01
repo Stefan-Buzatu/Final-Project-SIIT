@@ -1,4 +1,4 @@
-/* Center the table on the page */
+
 body {
     display: flex;
     justify-content: center;
@@ -6,27 +6,27 @@ body {
     height: 100vh;
     margin: 0;
 
-    background-image: url('../resources/add_background.jpg'); /* Replace with the path to your background image */
+    background-image: url('../resources/add_background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
 }
 
-/* Add styles to the table */
+
 table {
     border-collapse: collapse;
-    width: 50%; /* Adjust the width of the table as desired */
+    width: 50%;
 }
 
-/* Add styles to the table cells */
+
 table td, table th {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
-    width: 25%; /* Adjust the width of the cells as desired */
+    width: 25%;
 }
 
-/* Optional: Add some styles for better appearance */
+
 table th {
     background-color: #f2f2f2;
 }

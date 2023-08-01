@@ -138,6 +138,7 @@ public class CoffeeShopServlet extends HttpServlet {
         req.getRequestDispatcher("/jsps/Add-EditForm.jsp").forward(req, resp);
     }
     private void searchClientForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.getRequestDispatcher("/jsps/SearchClientForm.jsp").forward(req, resp);
     }
 
@@ -170,7 +171,56 @@ public class CoffeeShopServlet extends HttpServlet {
     }
 
     private void searchClient (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Client client;
+        String searchOption;
+        boolean showTable=false;
 
+    try{
+        if(req.getParameter("option")==null)
+            throw new NullPointerException("Must select an option");
+        if(req.getParameter("option").isEmpty())
+            throw new Exception("must insert in field");
+
+        searchOption=req.getParameter("option");
+        req.setAttribute("action_delete_client",Action.DELETE_CLIENT);
+        req.setAttribute("action_edit_client",Action.EDIT_CLIENT);
+        switch (searchOption){
+            case "phone":
+                if(req.getParameter("phone")==null || req.getParameter("phone").isEmpty())
+                throw new Exception("This field is mandatory");
+                showTable=true;
+                req.setAttribute("showTable",showTable);
+                client=coffeeShop.searchByPhoneNumber(req.getParameter("phone"));
+                req.setAttribute("client",client);
+                searchClientForm(req,resp);
+                break;
+            case "name":
+                if(req.getParameter("first_name")==null || req.getParameter("first_name").isEmpty() || req.getParameter("last_name")==null || req.getParameter("last_name").isEmpty())
+                    throw new Exception("This field is mandatory");
+                showTable=true;
+                req.setAttribute("showTable",showTable);
+                client=coffeeShop.searchByName(req.getParameter("first_name"),req.getParameter("last_name"));
+                req.setAttribute("client",client);
+                searchClientForm(req,resp);
+                break;
+            case "email":
+                if(req.getParameter("email")==null || req.getParameter("email").isEmpty())
+                    throw new Exception("This field is mandatory");
+                showTable=true;
+                req.setAttribute("showTable",showTable);
+                client=coffeeShop.searchByEmail(req.getParameter("email"));
+                req.setAttribute("client",client);
+                searchClientForm(req,resp);
+                break;
+            default:
+                searchClientForm(req,resp);
+                break;
+        }
+    }catch (Exception e){
+        e.printStackTrace();
+        req.setAttribute("error", e.getMessage());
+        searchClientForm(req,resp);
+    }
 
     }
 

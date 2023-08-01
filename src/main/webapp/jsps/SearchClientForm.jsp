@@ -14,12 +14,7 @@
     <title>Search Client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <style>
-        /* Hide the input-container by default */
-        #input-container {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jsps/css/search.css">
 </head>
 
 <body>
@@ -30,49 +25,154 @@
     </div>
 </c:if>
 
-<label for="select-option">Choose an option:</label>
-<select id="select-option" onchange="showInputs()">
-    <option value="default" selected disabled>Select an option</option>
-    <option value="phone">Phone</option>
-    <option value="name">Name</option>
-    <option value="email">Email</option>
-</select>
 
-<div id="input-container">
-    <input type="text" id="phone" placeholder="Phone">
-    <input type="text" id="first_name" placeholder="First Name">
-    <input type="text" id="last_name" placeholder="Last Name">
-    <input type="text" id="email" placeholder="Email">
+<form method="post">
+    <label for="option">Choose an option:</label>
+    <select id="option" name="option" onchange="handleOptionChange()">
+        <option value="default" selected disabled>Select an option</option>
+        <option value="phone">Phone</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <!-- Add more options as needed -->
+    </select>
+
+    <div id="inputFields">
+        <!-- Input text fields will be dynamically added here -->
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<c:if test="${requestScope.error == null && requestScope.showTable==true}">
+
+
+<div id="client">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Number of Entries</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><c:out value="${client.clientID}"/></td>
+                <td><c:out value="${client.clientFirstName}"/></td>
+                <td><c:out value="${client.clientLastName}"/></td>
+                <td><c:out value="${client.clientEmail}"/></td>
+                <td><c:out value="${client.clientPhoneNumber}"/></td>
+                <td><c:out value="${requestScope.coffeeShop.numberOfEntries(client.clientID)}"/> </td>
+                <td>
+                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_edit_client}"/>&clientId=<c:out value="${client.clientID}"/>">
+                        <button type="button" class="btn btn-success">EDIT</button></a>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" id="triggerDelete<c:out value="${client.clientID}"/>" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<c:out value="${client.clientID}"/>">DELETE</button></a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal<c:out value="${client.clientID}"/>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<c:out value="${client.clientID}"/>" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel<c:out value="${client.clientID}"/>">Confirm deletion</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p> Are you sure you want to delete <c:out value="${client.clientFirstName}"/> <c:out value="${client.clientLastName}"/>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_delete_client}"/>&clientId=<c:out value="${client.clientID}"/>">
+                                        <button type="button" class="btn btn-primary">Yes</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+</c:if>
+
 <script>
-    function showInputs() {
-        var selectElement = document.getElementById("select-option");
-        var inputContainer = document.getElementById("input-container");
-        var selectedOption = selectElement.value;
+    function handleOptionChange() {
+        var selectedOption = document.getElementById("option").value;
+        var inputFieldsContainer = document.getElementById("inputFields");
 
-        inputContainer.style.display = "block";
-
-        // Hide both input fields by default
-        document.getElementById("phone").style.display = "none";
-        document.getElementById("first_name").style.display = "none";
-        document.getElementById("last_name").style.display = "none";
-        document.getElementById("email").style.display = "none";
-
-        // Show the appropriate input fields based on the selected option
-        if (selectedOption === "phone") {
-            document.getElementById("phone").style.display = "block";
-        } else if (selectedOption === "name") {
-            document.getElementById("first_name").style.display = "block";
-            document.getElementById("last_name").style.display = "block";
+        // Remove any existing input text fields
+        while (inputFieldsContainer.firstChild) {
+            inputFieldsContainer.removeChild(inputFieldsContainer.firstChild);
         }
-        else
-        {
-            document.getElementById("email").style.display = "block";
+
+        // Create and add input text fields based on the selected option
+        if (selectedOption === "phone") {
+            var phone = document.createElement("input");
+            phone.type = "text";
+            phone.name = "phone";
+            phone.placeholder = "Phone";
+            inputFieldsContainer.appendChild(phone);
+        } else if (selectedOption === "name") {
+            var first_name = document.createElement("input");
+            first_name.type = "text";
+            first_name.name = "first_name";
+            first_name.placeholder = "First name";
+            inputFieldsContainer.appendChild(first_name);
+
+            var last_name = document.createElement("input");
+            last_name.type = "text";
+            last_name.name = "last_name";
+            last_name.placeholder = "Last name";
+            inputFieldsContainer.appendChild(last_name);
+        } else if (selectedOption === "email") {
+            var email = document.createElement("input");
+            email.type = "text";
+            email.name = "email";
+            email.placeholder = "Email";
+            inputFieldsContainer.appendChild(email);
         }
     }
 </script>
 
+<a href="<c:out value="${context}"/>/coffee_shop">
+    <button type="button" class="btn btn-success">Home</button></a>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+
+
 </body>
 </html>
