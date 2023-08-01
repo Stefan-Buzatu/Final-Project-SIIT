@@ -61,11 +61,11 @@
         </thead>
         <tbody>
             <tr>
-                <td><c:out value="${client.clientID}"/></td>
-                <td><c:out value="${client.clientFirstName}"/></td>
-                <td><c:out value="${client.clientLastName}"/></td>
-                <td><c:out value="${client.clientEmail}"/></td>
-                <td><c:out value="${client.clientPhoneNumber}"/></td>
+                <td><c:out value="${requestScope.client.clientID}"/></td>
+                <td><c:out value="${requestScope.client.clientFirstName}"/></td>
+                <td><c:out value="${requestScope.client.clientLastName}"/></td>
+                <td><c:out value="${requestScope.client.clientEmail}"/></td>
+                <td><c:out value="${requestScope.client.clientPhoneNumber}"/></td>
                 <td><c:out value="${requestScope.coffeeShop.numberOfEntries(client.clientID)}"/> </td>
                 <td>
                     <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_edit_client}"/>&clientId=<c:out value="${client.clientID}"/>">
