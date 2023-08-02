@@ -64,13 +64,12 @@ public class CoffeeShopServlet extends HttpServlet {
                 break;
             case ADD_ENTRY:
                 addEntry(req,resp);
+                listClients(req,resp);
                 break;
             default:
                 home(req,resp);
                 break;
         }
-
-
     }
 
     @Override
@@ -219,12 +218,12 @@ public class CoffeeShopServlet extends HttpServlet {
 
             UUID clientID  =UUID.fromString(req.getParameter("clientId"));
             System.out.println(clientID);
+
             long millis=System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
 
             Entry entry=new Entry(clientID,date);
             coffeeShop.addEntry(entry);
-            listClients(req, resp);
         }catch (Exception e)
         {
             e.printStackTrace();

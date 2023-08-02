@@ -53,9 +53,9 @@
             <td><c:out value="${client.clientPhoneNumber}"/></td>
             <td><c:out value="${requestScope.coffeeShop.numberOfEntries(client.clientID)}"/> </td>
             <td>
-
                 <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_add_entry}"/>&clientId=<c:out value="${client.clientID}"/>">
                         <button type="button" class="button_plus"></button></a>
+
                     &nbsp;
                     &nbsp;
                     &nbsp;
