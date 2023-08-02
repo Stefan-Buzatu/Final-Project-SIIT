@@ -1,6 +1,7 @@
 package Servlet;
 
 import CoffeeShop.Client;
+import CoffeeShop.Entry;
 import Connection.ConnectionManager;
 import Service.CoffeeShop;
 import Service.CoffeeShopImpl;
@@ -45,20 +46,12 @@ public class CoffeeShopServlet extends HttpServlet {
                 req.setAttribute("action",Action.VIEW_CLIENTS);
                 listClients(req,resp);
                 break;
-            case ADD_ENTRY:
-                req.setAttribute("action",Action.ADD_ENTRY);
-                addEntryForm(req,resp);
-                break;
             case VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT:
                 req.setAttribute("action",Action.VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT);
-                viewNumbersOfEntriesForm(req,resp);
                 break;
             case VIEW_REWARDS:
                 req.setAttribute("action",Action.VIEW_REWARDS);
                 viewRewards(req,resp);
-                break;
-            case HOME:
-                home(req, resp);
                 break;
             case EDIT_CLIENT:
                 loadClient(req, resp);
@@ -68,6 +61,9 @@ public class CoffeeShopServlet extends HttpServlet {
             case DELETE_CLIENT:
                 deleteClient(req, resp);
                 listClients(req, resp);
+                break;
+            case ADD_ENTRY:
+                addEntry(req,resp);
                 break;
             default:
                 home(req,resp);
@@ -89,10 +85,6 @@ public class CoffeeShopServlet extends HttpServlet {
                 break;
             case SEARCH_CLIENT:
                 searchClient(req,resp);
-                break;
-            case ADD_ENTRY:
-                break;
-            case VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT:
                 break;
             default:
                 home(req, resp);
@@ -125,6 +117,8 @@ public class CoffeeShopServlet extends HttpServlet {
             req.setAttribute("coffeeShop",coffeeShop);
             req.setAttribute("action_delete_client",Action.DELETE_CLIENT);
             req.setAttribute("action_edit_client",Action.EDIT_CLIENT);
+            req.setAttribute("action_add_entry",Action.ADD_ENTRY);
+
 
             req.getRequestDispatcher("/jsps/ClientsList.jsp").forward(req, resp);
 
@@ -142,12 +136,6 @@ public class CoffeeShopServlet extends HttpServlet {
         req.getRequestDispatcher("/jsps/SearchClientForm.jsp").forward(req, resp);
     }
 
-    private void addEntryForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/AddEntryForm.jsp").forward(req, resp);
-    }
-    private void viewNumbersOfEntriesForm (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/viewNumbersOfEntriesForm.jsp").forward(req, resp);
-    }
     private void viewRewards (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/jsps/ViewRewards.jsp").forward(req, resp);
     }
@@ -182,8 +170,10 @@ public class CoffeeShopServlet extends HttpServlet {
             throw new Exception("must insert in field");
 
         searchOption=req.getParameter("option");
+        req.setAttribute("action_add_entry",Action.ADD_ENTRY);
         req.setAttribute("action_delete_client",Action.DELETE_CLIENT);
         req.setAttribute("action_edit_client",Action.EDIT_CLIENT);
+        req.setAttribute("coffeeShop",coffeeShop);
         switch (searchOption){
             case "phone":
                 if(req.getParameter("phone")==null || req.getParameter("phone").isEmpty())
@@ -222,6 +212,24 @@ public class CoffeeShopServlet extends HttpServlet {
         searchClientForm(req,resp);
     }
 
+    }
+
+    private void addEntry (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        try{
+
+            UUID clientID  =UUID.fromString(req.getParameter("clientId"));
+            System.out.println(clientID);
+            long millis=System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+
+            Entry entry=new Entry(clientID,date);
+            coffeeShop.addEntry(entry);
+            listClients(req, resp);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            req.setAttribute("error", e.getMessage());
+        }
     }
 
 

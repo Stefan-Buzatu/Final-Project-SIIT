@@ -17,6 +17,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jsps/css/view_clients.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jsps/css/center_home_button.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/jsps/css/search.css">
 </head>
 
 <c:if test = "${requestScope.error != null}">
@@ -52,6 +53,16 @@
             <td><c:out value="${client.clientPhoneNumber}"/></td>
             <td><c:out value="${requestScope.coffeeShop.numberOfEntries(client.clientID)}"/> </td>
             <td>
+
+                <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_add_entry}"/>&clientId=<c:out value="${client.clientID}"/>">
+                        <button type="button" class="button_plus"></button></a>
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+
                 <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_edit_client}"/>&clientId=<c:out value="${client.clientID}"/>">
                     <button type="button" class="btn btn-success">EDIT</button></a>
 
