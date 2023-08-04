@@ -25,6 +25,9 @@
     </div>
 </c:if>
 
+<a href="<c:out value="${context}"/>/coffee_shop">
+    <button type="button" class="btn btn-success">Home</button></a>
+
 
 <form method="post">
     <label for="option">Choose an option:</label>
@@ -176,9 +179,6 @@
         }
     }
 </script>
-
-<a href="<c:out value="${context}"/>/coffee_shop">
-    <button type="button" class="btn btn-success">Home</button></a>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>

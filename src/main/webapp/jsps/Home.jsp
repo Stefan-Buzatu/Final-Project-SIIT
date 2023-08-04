@@ -41,19 +41,7 @@
             </td>
         </tr>
         <tr>
-            <td>
-                <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_add_entry}"/>">
-                    <button class="btn-add-entry">ADD AN ENTRY</button>
-                </a>
-
-            </td>
-            <td>
-                <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_view_number_of_entries_for_a_client}"/>">
-                    <button class="btn-view-no-entries">VIEW NUMBER OF ENTRIES FOR A CLIENT</button>
-                </a>
-
-            </td>
-            <td>
+            <td colspan="3">
                 <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_view_rewards}"/>">
                     <button class="btn-view-rewards">VIEW ALL REWARDS</button>
                 </a>

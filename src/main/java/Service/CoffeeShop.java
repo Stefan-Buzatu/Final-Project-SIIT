@@ -25,6 +25,7 @@ public interface CoffeeShop {
 
     //Reward methods
     List<Reward> getRewards() throws SQLException;
+    List<String> getImages();
 
 
 

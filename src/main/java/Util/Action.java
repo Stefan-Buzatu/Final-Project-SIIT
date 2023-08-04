@@ -8,6 +8,5 @@ public enum Action {
     SEARCH_CLIENT,
     VIEW_CLIENTS,
     ADD_ENTRY,
-    VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT,
     VIEW_REWARDS
 }

@@ -130,6 +130,25 @@ public class CoffeeShopImpl implements CoffeeShop{
         }
         return rewardList;
     }
+
+    @Override
+    public List<String> getImages(){
+        List<String> images=new ArrayList<>();
+
+        images.add("americano.jpg");
+        images.add("vanilla_cake.jpg");
+        images.add("chocolate_cake.jpg");
+        images.add("chocolate_ice_cream.jpg");
+        images.add("vanilla_ice_cream.jpg");
+        images.add("black_coffee.jpg");
+        images.add("cappuccino.jpg");
+        images.add("latte.jpg");
+        images.add("espresso.jpg");
+        images.add("croissant.jpg");
+
+        return images;
+    }
+
     @Override
     public void addEntry(Entry entry) throws SQLException {
         String insertStatement = "INSERT INTO entries VALUES (?, ?)";

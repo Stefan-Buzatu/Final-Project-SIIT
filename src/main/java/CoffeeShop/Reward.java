@@ -38,4 +38,12 @@ public class Reward {
                 ", numberOfEntries=" + numberOfEntries +
                 '}';
     }
+
+    public int getNumberOfEntries() {
+        return numberOfEntries;
+    }
+
+    public void setNumberOfEntries(int numberOfEntries) {
+        this.numberOfEntries = numberOfEntries;
+    }
 }

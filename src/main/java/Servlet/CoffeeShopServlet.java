@@ -2,6 +2,7 @@ package Servlet;
 
 import CoffeeShop.Client;
 import CoffeeShop.Entry;
+import CoffeeShop.Reward;
 import Connection.ConnectionManager;
 import Service.CoffeeShop;
 import Service.CoffeeShopImpl;
@@ -45,9 +46,6 @@ public class CoffeeShopServlet extends HttpServlet {
             case VIEW_CLIENTS:
                 req.setAttribute("action",Action.VIEW_CLIENTS);
                 listClients(req,resp);
-                break;
-            case VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT:
-                req.setAttribute("action",Action.VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT);
                 break;
             case VIEW_REWARDS:
                 req.setAttribute("action",Action.VIEW_REWARDS);
@@ -97,13 +95,16 @@ public class CoffeeShopServlet extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("phone"));
         try {
+            if(client.getClientEmail()==null || client.getClientFirstName()==null || client.getClientLastName()==null || client.getClientPhoneNumber()==null)
+                throw new SQLException("Fields are mandatory");
             if(client.getClientEmail().isEmpty() || client.getClientFirstName().isEmpty() || client.getClientLastName().isEmpty() || client.getClientPhoneNumber().isEmpty())
-            throw new SQLException();
+            throw new SQLException("Fields are mandatory");
             coffeeShop.addClient(client);
             listClients(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
             req.setAttribute("error", e.getMessage());
+            req.setAttribute("action", Action.ADD_CLIENT);
             addEditForm(req, resp);
         }
     }
@@ -123,6 +124,7 @@ public class CoffeeShopServlet extends HttpServlet {
 
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -135,8 +137,21 @@ public class CoffeeShopServlet extends HttpServlet {
         req.getRequestDispatcher("/jsps/SearchClientForm.jsp").forward(req, resp);
     }
 
-    private void viewRewards (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/jsps/ViewRewards.jsp").forward(req, resp);
+    private void viewRewards (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException  {
+        try{
+            List<Reward> rewards=coffeeShop.getRewards();
+
+            req.setAttribute("rewards",rewards);
+
+            List<String> images=coffeeShop.getImages();
+            req.setAttribute("images",images);
+
+            req.getRequestDispatcher("/jsps/ViewRewards.jsp").forward(req, resp);
+        }catch (SQLException e){
+            e.printStackTrace();
+
+        }
+
     }
 
 
@@ -146,8 +161,6 @@ public class CoffeeShopServlet extends HttpServlet {
     req.setAttribute("action_add_client", Action.ADD_CLIENT);
     req.setAttribute("action_search_client",Action.SEARCH_CLIENT);
     req.setAttribute("action_view_rewards",Action.VIEW_REWARDS);
-    req.setAttribute("action_view_number_of_entries_for_a_client",Action.VIEW_NUMBER_OF_ENTRIES_FOR_A_CLIENT);
-    req.setAttribute("action_add_entry",Action.ADD_ENTRY);
     req.setAttribute("action_view_clients",Action.VIEW_CLIENTS);
 
     req.getRequestDispatcher("/jsps/Home.jsp").forward(req, resp);
@@ -224,10 +237,12 @@ public class CoffeeShopServlet extends HttpServlet {
 
             Entry entry=new Entry(clientID,date);
             coffeeShop.addEntry(entry);
+            listClients(req,resp);
         }catch (Exception e)
         {
             e.printStackTrace();
             req.setAttribute("error", e.getMessage());
+            listClients(req,resp);
         }
     }
 
@@ -282,8 +297,10 @@ public class CoffeeShopServlet extends HttpServlet {
                 req.getParameter("email"),
                 req.getParameter("phone"));
         try {
+            if(client.getClientEmail()==null || client.getClientFirstName()==null || client.getClientLastName()==null || client.getClientPhoneNumber()==null)
+                throw new SQLException("Fields are mandatory");
             if(client.getClientEmail().isEmpty() || client.getClientFirstName().isEmpty() || client.getClientLastName().isEmpty() || client.getClientPhoneNumber().isEmpty())
-                throw new SQLException();
+                throw new SQLException("Fields are mandatory");
             coffeeShop.updateClient(clientID, client);
             listClients(req, resp);
         } catch (SQLException e) {
@@ -294,6 +311,7 @@ public class CoffeeShopServlet extends HttpServlet {
             addEditForm(req, resp);
         }
     }
+
 
 
 

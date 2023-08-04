@@ -23,6 +23,8 @@
     <c:out value="${requestScope.error}"/>
   </div>
 </c:if>
+
+
 <div class="form-wrapper">
 <form method="post" action="<c:out value="${context}"/>/coffee_shop">
   <input type="hidden" name="action" value="<c:out value="${requestScope.action}"/>">

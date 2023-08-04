@@ -26,9 +26,11 @@
     </div>
 </c:if>
 
+<a href="<c:out value="${context}"/>/coffee_shop">
+    <button type="button" class="btn btn-success">Home</button></a>
+
 <div class="text-center">
-    <a href="<c:out value="${context}"/>/coffee_shop">
-        <button type="button" class="btn btn-success">Home</button></a>
+    <h1>Clients List</h1>
 </div>
 
 <table class="table table-hover">
