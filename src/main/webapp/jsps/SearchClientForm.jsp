@@ -72,7 +72,7 @@
                 <td><c:out value="${requestScope.coffeeShop.numberOfEntries(requestScope.client.clientID)}"/> </td>
                 <td>
 
-                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_add_entry}"/>&clientId=<c:out value="${client.clientID}"/>">
+                    <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_add_entry}"/>&clientId=<c:out value="${requestScope.client.clientID}"/>">
                         <button type="button" class="button_plus"></button></a>
 
                     &nbsp;
@@ -81,7 +81,6 @@
                     &nbsp;
                     &nbsp;
                     &nbsp;
-
                     <a href="<c:out value="${context}"/>/coffee_shop?action=<c:out value="${requestScope.action_edit_client}"/>&clientId=<c:out value="${requestScope.client.clientID}"/>">
                         <button type="button" class="btn btn-success">EDIT</button></a>
 

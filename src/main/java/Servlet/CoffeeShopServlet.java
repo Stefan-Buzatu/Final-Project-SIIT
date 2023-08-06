@@ -61,8 +61,8 @@ public class CoffeeShopServlet extends HttpServlet {
                 listClients(req, resp);
                 break;
             case ADD_ENTRY:
-                addEntry(req,resp);
-                listClients(req,resp);
+                req.setAttribute("action",Action.ADD_ENTRY);
+                addEntry(req, resp);
                 break;
             default:
                 home(req,resp);
@@ -89,7 +89,8 @@ public class CoffeeShopServlet extends HttpServlet {
     }
 
     private void addClient(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Client client = new Client(UUID.randomUUID(),
+        UUID clientID=UUID.randomUUID();
+        Client client = new Client(clientID,
                 req.getParameter("first_name"),
                 req.getParameter("last_name"),
                 req.getParameter("email"),
@@ -100,6 +101,12 @@ public class CoffeeShopServlet extends HttpServlet {
             if(client.getClientEmail().isEmpty() || client.getClientFirstName().isEmpty() || client.getClientLastName().isEmpty() || client.getClientPhoneNumber().isEmpty())
             throw new SQLException("Fields are mandatory");
             coffeeShop.addClient(client);
+
+            long millis=System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            Entry entry=new Entry(clientID,date);
+            coffeeShop.addEntry(entry);
+
             listClients(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -230,7 +237,7 @@ public class CoffeeShopServlet extends HttpServlet {
         try{
 
             UUID clientID  =UUID.fromString(req.getParameter("clientId"));
-            System.out.println(clientID);
+
 
             long millis=System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
