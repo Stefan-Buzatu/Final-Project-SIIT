@@ -1,1 +1,2 @@
-I made a website for cafes to store their customers, and for them to receive different prizes if they reach a certain number of entrances to the cafe
+I made a website for cafes to store their customers, and for them to receive different prizes if they reach a certain number of entrances to the cafe.
+The code for the app is in the master branch.
